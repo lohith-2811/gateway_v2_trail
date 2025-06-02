@@ -234,12 +234,7 @@ app.post('/api/payment', async (req, res) => {
         if (payment.order_id !== orderId || payment.status !== 'captured') {
           return res.status(400).json({ success: false, message: 'Invalid payment or order ID.' });
         }
-        // Optionally verify payment signature
-        const generatedSignature = crypto
-          .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-          .update(`${orderId}|${paymentId}`)
-          .digest('hex');
-        // You can receive the signature from the client if needed
+        // Optionally verify payment signature here if sent from client
       } catch (err) {
         console.error('Error verifying Razorpay payment:', err.message);
         return res.status(400).json({ success: false, message: 'Payment verification failed.' });
